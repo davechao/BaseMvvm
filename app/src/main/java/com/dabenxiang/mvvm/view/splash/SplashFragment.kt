@@ -3,7 +3,6 @@ package com.dabenxiang.mvvm.view.splash
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.compose.foundation.Text
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -18,9 +17,8 @@ class SplashFragment : Fragment() {
         savedInstanceState: Bundle?
     ) = ComposeView(requireContext()).apply {
         setContent {
-            Text("Hello Dave")
+            buildNewsStory()
         }
     }
-
-
 }
+
