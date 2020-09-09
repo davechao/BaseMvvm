@@ -20,8 +20,8 @@ android {
         }
     }
 
-    compileSdkVersion 29
-    buildToolsVersion "29.0.3"
+    compileSdkVersion 30
+    buildToolsVersion "30.0.1"
 
     def getLocalIPv4 = { ->
         def ip4s = []
@@ -41,7 +41,7 @@ android {
     defaultConfig {
         applicationId "com.test.mvvm"
         minSdkVersion 26
-        targetSdkVersion 29
+        targetSdkVersion 30
         versionCode version.versionCode.toInteger()
         versionName version.versionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
