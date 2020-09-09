@@ -1,20 +1,26 @@
 package com.dabenxiang.mvvm.view.splash
 
 import android.os.Bundle
-import android.view.View
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.compose.foundation.Text
+import androidx.compose.ui.platform.ComposeView
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.dabenxiang.mvvm.R
-import com.dabenxiang.mvvm.view.base.BaseFragment
 
-class SplashFragment : BaseFragment() {
+class SplashFragment : Fragment() {
 
     private val viewModel: SplashViewModel by viewModels()
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ) = ComposeView(requireContext()).apply {
+        setContent {
+            Text("Hello Dave")
+        }
     }
 
-    override fun getLayoutId(): Int {
-        return R.layout.fragment_splash
-    }
+
 }
