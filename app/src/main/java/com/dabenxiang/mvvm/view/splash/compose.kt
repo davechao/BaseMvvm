@@ -13,9 +13,10 @@ import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.dabenxiang.mvvm.R
+import com.dabenxiang.mvvm.model.vo.CardItem
 
 @Composable
-fun buildNewsStory() {
+fun buildNewsStory(cardItem: CardItem) {
     val image = imageResource(R.drawable.header)
     Column(modifier = Modifier.padding(16.dp)) {
 
@@ -29,12 +30,12 @@ fun buildNewsStory() {
         Spacer(Modifier.preferredHeight(16.dp))
 
         Text(
-            "A day wandering through the sandhills in Shark Fin Cove, and a few of the sights I saw",
+            cardItem.content,
             style = typography.h6,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis
         )
-        Text("Davenport, California", style = typography.body2)
-        Text("December 2018", style = typography.body2)
+        Text(cardItem.place, style = typography.body2)
+        Text(cardItem.date, style = typography.body2)
     }
 }
