@@ -2,9 +2,9 @@ package com.dabenxiang.mvvm.view.splash
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.compose.material.MaterialTheme
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
@@ -22,15 +22,17 @@ class SplashFragment : Fragment() {
     ) = ComposeView(requireContext()).apply {
         setContent {
             MaterialTheme {
-                val cardItem = viewModel.cardLiveData.observeAsState().value ?: CardItem()
-                buildNewsStory(cardItem)
+                observeCardData(viewModel)
             }
         }
-    }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         viewModel.getCardData()
     }
+}
+
+@Composable
+fun observeCardData(viewModel: SplashViewModel) {
+    val cardItem = viewModel.cardLiveData.observeAsState().value ?: CardItem()
+    buildCard(cardItem)
 }
 

@@ -16,7 +16,7 @@ import com.dabenxiang.mvvm.R
 import com.dabenxiang.mvvm.model.vo.CardItem
 
 @Composable
-fun buildNewsStory(cardItem: CardItem) {
+fun buildCard(cardItem: CardItem) {
     val image = imageResource(R.drawable.header)
     Column(modifier = Modifier.padding(16.dp)) {
 
