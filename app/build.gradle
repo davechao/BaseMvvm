@@ -3,6 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: "androidx.navigation.safeargs.kotlin"
+apply plugin: 'com.apollographql.apollo'
 
 android {
 
@@ -121,7 +122,10 @@ android {
     lintOptions {
         disable 'MissingDefaultResource'
     }
+}
 
+apollo {
+    generateKotlinModels.set(true)
 }
 
 project.tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
@@ -185,6 +189,13 @@ dependencies {
     // DataStore
     implementation "androidx.datastore:datastore-preferences:$datastore_version"
     implementation "androidx.datastore:datastore-core:$datastore_version"
+
+    // Apollo - GraphQL
+    implementation "com.apollographql.apollo:apollo-runtime:$apollo_version"
+    implementation "com.apollographql.apollo:apollo-normalized-cache-sqlite:$apollo_version"
+    implementation "com.apollographql.apollo:apollo-coroutines-support:$apollo_version"
+    implementation "com.apollographql.apollo:apollo-rx3-support:$apollo_version"
+    implementation "com.apollographql.apollo:apollo-api:$apollo_version"
 
     // Koin
     implementation "org.koin:koin-core:$koin_version"
