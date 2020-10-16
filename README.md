@@ -6,6 +6,6 @@
 - LiveData
 - Navigation
 
-# Generate GraphQL schema.json
+### Generate GraphQL schema.json
 1. npm install -g apollo-codegen
-2. apollo-codegen download-schema 服務器地址 --output schema.json
+2. apollo-codegen download-schema [GraphQL-Domain] --output schema.json
