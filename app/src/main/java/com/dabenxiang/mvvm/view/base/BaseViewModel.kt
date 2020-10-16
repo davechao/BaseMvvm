@@ -2,7 +2,6 @@ package com.dabenxiang.mvvm.view.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apollographql.apollo.ApolloClient
 import com.dabenxiang.mvvm.model.api.ExceptionResult
 import com.dabenxiang.mvvm.model.datastore.DataStores
 import com.dabenxiang.mvvm.model.pref.Pref
@@ -17,7 +16,6 @@ abstract class BaseViewModel : ViewModel(), KoinComponent {
     val gson: Gson by inject()
     val pref: Pref by inject()
     val dataStores: DataStores by inject()
-    val apolloClient: ApolloClient by inject()
 
     fun processException(exceptionResult: ExceptionResult) {
         when (exceptionResult) {
