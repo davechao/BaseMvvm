@@ -22,16 +22,15 @@ class SplashFragment : Fragment() {
     ) = ComposeView(requireContext()).apply {
         setContent {
             MaterialTheme {
-                observeCardData(viewModel)
+                buildScreen(viewModel)
             }
+            viewModel.getCardData()
         }
-
-        viewModel.getCardData()
     }
 }
 
 @Composable
-fun observeCardData(viewModel: SplashViewModel) {
+fun buildScreen(viewModel: SplashViewModel) {
     val cardItem = viewModel.cardLiveData.observeAsState().value ?: CardItem()
     buildCard(cardItem)
 }
