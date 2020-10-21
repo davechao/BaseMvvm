@@ -1,9 +1,13 @@
-apply plugin: 'com.android.application'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-kapt'
-apply plugin: "androidx.navigation.safeargs.kotlin"
-apply plugin: 'com.apollographql.apollo'
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-android-extensions'
+    id 'kotlin-kapt'
+    id 'koin'
+    id 'androidx.navigation.safeargs.kotlin'
+    id 'com.google.protobuf'
+    id 'com.apollographql.apollo'
+}
 
 android {
 
@@ -40,19 +44,20 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.test.mvvm"
-        minSdkVersion 26
+        applicationId "com.dabenxiang.mvvm"
+        minSdkVersion 24
         targetSdkVersion 30
         versionCode version.versionCode.toInteger()
         versionName version.versionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "API_HOST", '"http://dev-atw-api.silkrode.com.tw/"'
+        buildConfigField "String", "GRAPHQL_API_HOST", '"https://graphqlzero.almansi.me/api"'
         buildConfigField "String", "LOCAL_SOCKET_HOST", "\"${getLocalIPv4()}\""
         buildConfigField "int", "LOCAL_SOCKET_PORT", "8080"
         buildConfigField "String", "WEB_SOCKET_HOST", '"ws://dev-wt-api.silkrode.com.tw/topics/atw-wx?token="'
         archivesBaseName = "$applicationName-v$versionName"
         ndk {
-            abiFilters "armeabi-v7a", "arm64-v8a" // todo: select one
+            abiFilters "armeabi-v7a", "arm64-v8a"
         }
     }
 
@@ -78,19 +83,21 @@ android {
     productFlavors {
         dev {
             buildConfigField "String", "API_HOST", '"http://dev-gen-api.silkrode.com.tw/"'
+            buildConfigField "String", "GRAPHQL_API_HOST", '"https://graphqlzero.almansi.me/api"'
             buildConfigField "String", "WEB_SOCKET_HOST", '"ws://dev-gen-api.silkrode.com.tw/topics/gen?token="'
         }
 
         sit {
             buildConfigField "String", "API_HOST", '"https://sit-www.ssh886.com/"'
+            buildConfigField "String", "GRAPHQL_API_HOST", '"https://graphqlzero.almansi.me/api"'
             buildConfigField "String", "WEB_SOCKET_HOST", '"wss://sit-wss-gateway.ssh886.com/topics/gen?token="'
         }
 
         prod {
             buildConfigField "String", "API_HOST", '"http://dev-gen-api.silkrode.com.tw/"'
+            buildConfigField "String", "GRAPHQL_API_HOST", '"https://graphqlzero.almansi.me/api"'
             buildConfigField "String", "WEB_SOCKET_HOST", '"ws://dev-gen-api.silkrode.com.tw/topics/gen?token="'
         }
-
     }
 
     flavorDimensions "normal"
@@ -122,6 +129,39 @@ android {
     lintOptions {
         disable 'MissingDefaultResource'
     }
+
+    sourceSets {
+        main {
+            java {
+                srcDirs 'src/main/java'
+                include '**/*.proto'
+            }
+            proto {
+                srcDirs 'src/main/proto'
+            }
+        }
+    }
+}
+
+protobuf {
+    protoc {
+        artifact = 'com.google.protobuf:protoc:3.0.0'
+    }
+    plugins {
+        javalite {
+            artifact = 'com.google.protobuf:protoc-gen-javalite:3.0.0'
+        }
+    }
+    generateProtoTasks {
+        all().each { task ->
+            task.builtins {
+                remove java
+            }
+            task.plugins {
+                javalite {}
+            }
+        }
+    }
 }
 
 apollo {
@@ -138,37 +178,53 @@ project.tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
     }
 }
 
-
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
     // AndroidX
-    implementation "androidx.appcompat:appcompat:$appcompat_version"
     implementation "androidx.core:core-ktx:$ktx_version"
+    implementation "androidx.appcompat:appcompat:$appcompat_version"
     implementation "androidx.activity:activity-ktx:$activity_ktx_version"
     implementation "androidx.fragment:fragment-ktx:$fragment_ktx_version"
     implementation "com.google.android.material:material:$material_version"
-
-    // Kotlin Coroutines
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
-
-    // Constraint Layout
-    implementation "androidx.constraintlayout:constraintlayout:$constraint_version"
-
-    // Navigation
-    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
-    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
-
-    // Lifecycle, ViewModel and LiveData
-    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
 
     // KTX Extensions
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$ktx_extensions_version"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$ktx_extensions_version"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$ktx_extensions_version"
+
+    // Constraint Layout
+    implementation "androidx.constraintlayout:constraintlayout:$constraint_version"
+
+    // Lifecycle, ViewModel and LiveData
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycle_version"
+
+    // Navigation
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+
+    // Koin
+    implementation "org.koin:koin-core:$koin_version"
+    implementation "org.koin:koin-core-ext:$koin_version"
+    implementation "org.koin:koin-android:$koin_version"
+    implementation "org.koin:koin-androidx-scope:$koin_version"
+    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
+    implementation "org.koin:koin-androidx-fragment:$koin_version"
+    implementation "org.koin:koin-androidx-workmanager:$koin_version"
+    implementation "org.koin:koin-androidx-compose:$koin_version"
+    implementation "org.koin:koin-androidx-ext:$koin_version"
+
+    // Paging
+    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
+
+    // Viewpager
+    implementation "androidx.viewpager2:viewpager2:$viewpager2_version"
+
+    // Epoxy
+    implementation "com.airbnb.android:epoxy:$epoxy_version"
+    kapt "com.airbnb.android:epoxy-processor:$epoxy_version"
 
     // OkHttp
     implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
@@ -178,18 +234,6 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
 
-    // Room
-    implementation "androidx.room:room-runtime:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
-    implementation "androidx.room:room-ktx:$room_version"
-
-    // Work
-    implementation "androidx.work:work-runtime-ktx:$work_version"
-
-    // DataStore
-    implementation "androidx.datastore:datastore-preferences:$datastore_version"
-    implementation "androidx.datastore:datastore-core:$datastore_version"
-
     // Apollo - GraphQL
     implementation "com.apollographql.apollo:apollo-runtime:$apollo_version"
     implementation "com.apollographql.apollo:apollo-normalized-cache-sqlite:$apollo_version"
@@ -197,23 +241,41 @@ dependencies {
     implementation "com.apollographql.apollo:apollo-rx3-support:$apollo_version"
     implementation "com.apollographql.apollo:apollo-api:$apollo_version"
 
-    // Koin
-    implementation "org.koin:koin-core:$koin_version"
-    implementation "org.koin:koin-core-ext:$koin_version"
-    implementation "org.koin:koin-java:$koin_version"
-    implementation "org.koin:koin-android:$koin_version"
-    implementation "org.koin:koin-android-scope:$koin_version"
-    implementation "org.koin:koin-android-viewmodel:$koin_version"
-    implementation "org.koin:koin-android-ext:$koin_version"
-    implementation "org.koin:koin-androidx-scope:$koin_version"
-    implementation "org.koin:koin-androidx-viewmodel:$koin_version"
-    implementation "org.koin:koin-androidx-ext:$koin_version"
+    // Room
+    implementation "androidx.room:room-runtime:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-ktx:$room_version"
 
-    // Paging
-    implementation "androidx.paging:paging-runtime:$paging_version"
+    // DataStore
+    implementation "androidx.datastore:datastore-preferences:$datastore_version"
+    implementation "androidx.datastore:datastore-core:$datastore_version"
 
-    // LiveEventBus
-    implementation "com.jeremyliao:live-event-bus-x:$live_event_bus_version"
+    // Kotlin Coroutines
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
+
+    // Work
+    implementation "androidx.work:work-runtime-ktx:$work_version"
+
+    // WebSocket
+    implementation "org.java-websocket:Java-WebSocket:$websocket_version"
+
+    // ProtoBuffer
+    implementation "com.google.protobuf:protobuf-lite:$protobuf_lite_version"
+    protobuf "com.google.protobuf:protobuf-java:$protobuf_java_version"
+
+    // Security-Crypto
+    implementation "androidx.security:security-crypto:$security_crypto_version"
+
+    // Glide
+    implementation "com.github.bumptech.glide:glide:$glide_version"
+    kapt "com.github.bumptech.glide:compiler:$glide_version"
+
+    // Glide Transformations
+    implementation "jp.wasabeef:glide-transformations:$glide_transformations_version"
+
+    // CircleImageView
+    implementation "de.hdodenhof:circleimageview:$circle_image_view_version"
 
     // Material Dialogs
     implementation "com.afollestad.material-dialogs:core:$material_dialogs_version"
@@ -228,21 +290,15 @@ dependencies {
     // Swipe refresh
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:$swipe_refresh_layout_version"
 
-    // CircleImageView
-    implementation "de.hdodenhof:circleimageview:$circle_image_view_version"
+    // QrCode
+    implementation "com.journeyapps:zxing-android-embedded:$zxing_android_embedded_version"
+    implementation "com.google.zxing:core:$zxing_core_version"
 
-    // Glide
-    implementation "com.github.bumptech.glide:glide:$glide_version"
-    kapt "com.github.bumptech.glide:compiler:$glide_version"
+    // MPAndroidChart
+    implementation "com.github.PhilJay:MPAndroidChart:$mpandroidchart_version"
 
-    // Glide Transformations
-    implementation "jp.wasabeef:glide-transformations:$glide_transformations_version"
-
-    // WebSocket
-    implementation "org.java-websocket:Java-WebSocket:$websocket_version"
-
-    // Security-Crypto
-    implementation "androidx.security:security-crypto:$security_crypto_version"
+    // Crypto
+    implementation "org.conscrypt:conscrypt-android:$conscrypt_version"
 
     // Stetho
     implementation "com.facebook.stetho:stetho:$stetho_version"
@@ -252,32 +308,25 @@ dependencies {
     // Timber
     implementation "com.jakewharton.timber:timber:$timber_version"
 
-    // Flurry
-    implementation "com.flurry.android:analytics:$flurry_version"
-
     // AndroidUtilCode
     implementation "com.blankj:utilcodex:$utilcodex_version"
 
-    // QrCode
-    implementation "com.journeyapps:zxing-android-embedded:$zxing_android_embedded_version"
-    implementation "com.google.zxing:core:$zxing_core_version"
-
     // Test
-    testImplementation "io.mockk:mockk:$mokk_version"
-    testImplementation "junit:junit:$junit_version"
-    testImplementation "org.koin:koin-test:$koin_version"
-    testImplementation "androidx.room:room-testing:$room_version"
-    testImplementation "androidx.paging:paging-common:$paging_version"
     testImplementation "androidx.arch.core:core-testing:$core_testing"
-    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
+    testImplementation "androidx.paging:paging-common-ktx:$paging_version"
+    testImplementation "androidx.room:room-testing:$room_version"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_test_version"
+    testImplementation "org.koin:koin-test:$koin_version"
+    testImplementation "io.mockk:mockk:$mokk_version"
     testImplementation "com.squareup.okhttp3:mockwebserver:$mock_webserver_version"
+    testImplementation "junit:junit:$junit_version"
     androidTestImplementation "androidx.test:runner:$runner_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
-    androidTestImplementation "io.mockk:mockk-android:$mokk_version"
     androidTestImplementation "androidx.test:core:$android_test_version"
     androidTestImplementation "androidx.test:runner:$android_test_version"
     androidTestImplementation "androidx.test:rules:$android_test_version"
     androidTestImplementation "androidx.test.ext:junit:$android_test_ext_version"
+    androidTestImplementation "io.mockk:mockk-android:$mokk_version"
 }
 
 class Version {

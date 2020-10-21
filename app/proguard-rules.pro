@@ -20,6 +20,7 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
+#noinspection ShrinkerUnresolvedReference
 -keepattributes SourceFile,LineNumberTable
 
 # for enum
@@ -27,10 +28,6 @@
 
 # for All Throwable
 -keep class * extends java.lang.Throwable
-
-# for app vo
--keep class com.dabenxiang.mvvm.model.vo.** {*;}
--keep class com.dabenxiang.mvvm.model.api.vo.** {*;}
 
 # for okhttp (from okhttp3.pro)
 # JSR 305 annotations are for embedding nullability information.
@@ -60,7 +57,7 @@
 -dontwarn kotlin.Unit
 # Top-level functions that can only be used by Kotlin.
 -dontwarn retrofit2.KotlinExtensions
--dontwarn retrofit2.KotlinExtensions$*
+#-dontwarn retrofit2.KotlinExtensions$*
 
 # Gson
 -keepattributes Signature
@@ -76,12 +73,41 @@
 -keepnames class kotlinx.coroutines.CoroutineExceptionHandler {}
 -keepnames class kotlinx.coroutines.android.AndroidExceptionPreHandler {}
 -keepnames class kotlinx.coroutines.android.AndroidDispatcherFactory {}
+
 -keepclassmembernames class kotlinx.** {
     volatile <fields>;
 }
 
-# Security-Crypto
--keep class com.google.crypto.tink.** { *; }
+# AndroidX
+-dontwarn com.google.android.material.**
+-keep class com.google.android.material.** { *; }
+-dontwarn androidx.**
+-keep class androidx.** { *; }
+-keep interface androidx.** { *; }
+-keep class * extends androidx.fragment.app.Fragment{}
 
-# Navigation
--keep class androidx.navigation.fragment.NavHostFragment {}
+# Datastore
+-keep class androidx.datastore.*.** {*;}
+
+# Support Design
+-dontwarn android.support.design.**
+-keep class android.support.design.** { *; }
+-keep interface android.support.design.** { *; }
+-keep public class android.support.design.R$* { *; }
+
+# Glide
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep class * extends com.bumptech.glide.module.AppGlideModule {
+ <init>(...);
+}
+-keep public enum com.bumptech.glide.load.ImageHeaderParser$** {
+  **[] $VALUES;
+  public *;
+}
+-keep class com.bumptech.glide.load.data.ParcelFileDescriptorRewinder$InternalRewinder {
+  *** rewind();
+}
+
+# App Vo
+-keep class com.dabenxiang.mvvm.model.vo.** {*;}
+-keep class com.dabenxiang.mvvm.model.api.vo.** {*;}

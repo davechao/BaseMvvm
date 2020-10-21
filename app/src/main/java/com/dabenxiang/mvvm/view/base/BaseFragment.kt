@@ -51,7 +51,7 @@ abstract class BaseFragment : Fragment() {
     fun onApiError(throwable: Throwable) {
         Timber.e("onApiError: $throwable")
         when (val errorHandler =
-            throwable.handleException { ex -> mainViewModel?.processException(ex) }) {
+            throwable handleException { ex -> mainViewModel?.processException(ex) }) {
             is ExceptionResult.HttpError -> {
                 val errorItem = errorHandler.httpExceptionItem.errorItem
 
@@ -67,16 +67,6 @@ abstract class BaseFragment : Fragment() {
             }
             is ExceptionResult.Crash -> {
                 showToast(requireContext(), "${errorHandler.throwable}")
-            }
-            is ExceptionResult.ApiError -> {
-                val apiException = errorHandler.apiException
-                val code = apiException.code
-                val msg = apiException.msg
-
-                Timber.d("code: $code")
-                Timber.d("message: $msg")
-
-                showToast(requireContext(), "$msg")
             }
         }
     }

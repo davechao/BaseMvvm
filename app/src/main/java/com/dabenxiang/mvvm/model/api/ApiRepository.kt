@@ -2,7 +2,7 @@ package com.dabenxiang.mvvm.model.api
 
 import com.dabenxiang.mvvm.model.api.vo.error.TOKEN_NOT_FOUND
 
-class ApiRepository {
+class ApiRepository(private val apiService: ApiService) {
 
     companion object {
         const val X_APP_VERSION = "x-app-version"
