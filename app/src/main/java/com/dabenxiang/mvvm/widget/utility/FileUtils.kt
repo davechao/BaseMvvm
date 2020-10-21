@@ -29,6 +29,18 @@ object FileUtils {
             .plus(fileName)
     }
 
+    @Suppress(
+        "NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS",
+        "RECEIVER_NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS"
+    )
+    fun deleteExternalFile(context: Context) {
+        File(context.getExternalFilesDir(TYPE_APK)?.absolutePath).let {
+            while (it.listFiles().iterator().hasNext()) {
+                it.listFiles().iterator().next().delete()
+            }
+        }
+    }
+
     private fun getAppPath(context: Context): String {
         return when (Environment.MEDIA_MOUNTED) {
             Environment.getExternalStorageState() -> {

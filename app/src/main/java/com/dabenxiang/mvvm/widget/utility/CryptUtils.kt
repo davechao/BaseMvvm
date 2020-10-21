@@ -2,17 +2,18 @@ package com.dabenxiang.mvvm.widget.utility
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.Bitmap
 import android.util.Base64
 import androidx.security.crypto.EncryptedFile
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKeys
+import com.blankj.utilcode.util.EncodeUtils
+import com.blankj.utilcode.util.ImageUtils
 import java.io.File
 
 object CryptUtils {
 
     private val masterKeyAlias = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC)
-
-    external fun getCertPwd(): String
 
     fun encodeBase64(text: String): String {
         return Base64.encodeToString(text.toByteArray(), Base64.DEFAULT)
@@ -56,6 +57,11 @@ object CryptUtils {
             EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
         )
+    }
+
+    fun bitmapToBase64(bitmap: Bitmap): String {
+        val bytes = ImageUtils.bitmap2Bytes(bitmap, Bitmap.CompressFormat.PNG)
+        return EncodeUtils.base64Encode2String(bytes)
     }
 
     private fun getEncryptedFile(
