@@ -46,7 +46,7 @@ fun provideOkHttpClient(
         .connectTimeout(30, TimeUnit.SECONDS)
         .readTimeout(60, TimeUnit.SECONDS)
         .writeTimeout(60, TimeUnit.SECONDS)
-        .addInterceptor(apiInterceptor)
+//        .addInterceptor(apiInterceptor)
         .addInterceptor(httpLoggingInterceptor)
 
     if (BuildConfig.DEBUG) {

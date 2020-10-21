@@ -9,9 +9,11 @@ import com.dabenxiang.mvvm.model.datastore.DataStores
 import com.dabenxiang.mvvm.widget.utility.HttpUtils.getExceptionDetail
 import com.google.gson.Gson
 import kotlinx.coroutines.launch
-import org.koin.core.KoinComponent
-import org.koin.core.inject
+import org.koin.core.component.KoinApiExtension
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
+@OptIn(KoinApiExtension::class)
 abstract class BaseViewModel : ViewModel(), KoinComponent {
 
     val gson: Gson by inject()

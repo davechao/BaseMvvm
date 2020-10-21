@@ -10,11 +10,10 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
 import com.dabenxiang.mvvm.App
-import org.koin.core.KoinComponent
 import java.text.SimpleDateFormat
 import java.util.*
 
-object GeneralUtils : KoinComponent {
+object GeneralUtils {
 
     private const val TIME_ZONE_OFFSET: Long = 1000 * 60 * 60 * 8
 
