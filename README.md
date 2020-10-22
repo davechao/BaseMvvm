@@ -1,7 +1,7 @@
 # MVVM Architecture
 - MVVM
 - Coroutines
-- Koin
-- Retrofit
-- LiveData
-- Navigation
+- Hilt
+- OkHttp & Retrofit
+- Jetpack
+
