@@ -2,6 +2,6 @@
 - MVVM
 - Coroutines
 - Koin
-- Retrofit
-- LiveData
-- Navigation
+- Jetpack
+- OkHttp & Retrofit
+- Apollo GraphQL
