@@ -2,6 +2,6 @@
 - MVVM
 - Coroutines
 - Hilt
-- OkHttp & Retrofit
 - Jetpack
+- OkHttp & Retrofit
 
