@@ -4,4 +4,3 @@
 - Koin
 - Jetpack
 - OkHttp & Retrofit
-- Apollo GraphQL
