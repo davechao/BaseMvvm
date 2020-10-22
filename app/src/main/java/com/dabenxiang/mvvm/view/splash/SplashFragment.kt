@@ -4,7 +4,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.dabenxiang.mvvm.R
-import com.dabenxiang.mvvm.model.api.ApiResult.*
+import com.dabenxiang.mvvm.model.api.ApiResult.Error
+import com.dabenxiang.mvvm.model.api.ApiResult.Success
 import com.dabenxiang.mvvm.view.base.BaseFragment
 import timber.log.Timber
 
