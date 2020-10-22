@@ -2,6 +2,5 @@
 - MVVM
 - Coroutines
 - Koin
-- Retrofit
-- LiveData
-- Navigation
+- OkHttp & Retrofit
+- Jetpack
