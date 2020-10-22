@@ -4,7 +4,9 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import com.dabenxiang.mvvm.R
 import com.dabenxiang.mvvm.view.base.BaseActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : BaseActivity() {
 
     private val viewModel: MainViewModel by viewModels()

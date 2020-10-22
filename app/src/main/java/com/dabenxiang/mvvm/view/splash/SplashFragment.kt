@@ -5,7 +5,9 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import com.dabenxiang.mvvm.R
 import com.dabenxiang.mvvm.view.base.BaseFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SplashFragment : BaseFragment() {
 
     private val viewModel: SplashViewModel by viewModels()
