@@ -5,7 +5,6 @@ import com.dabenxiang.mvvm.API_HOST_URL
 import com.dabenxiang.mvvm.BuildConfig
 import com.dabenxiang.mvvm.GRAPHQL_API_HOST_URL
 import com.dabenxiang.mvvm.model.api.ApiInterceptor
-import com.dabenxiang.mvvm.model.api.ApiRepository
 import com.dabenxiang.mvvm.model.api.ApiService
 import com.facebook.stetho.okhttp3.StethoInterceptor
 import com.google.gson.Gson
@@ -21,7 +20,6 @@ val apiModule = module {
     single { provideHttpLoggingInterceptor() }
     single { provideOkHttpClient(get(), get()) }
     single { provideApiService(get()) }
-    single { provideApiRepository(get()) }
     single { provideApolloClient(get()) }
 }
 
@@ -63,10 +61,6 @@ fun provideApiService(okHttpClient: OkHttpClient): ApiService {
         .baseUrl(API_HOST_URL)
         .build()
         .create(ApiService::class.java)
-}
-
-fun provideApiRepository(apiService: ApiService): ApiRepository {
-    return ApiRepository(apiService)
 }
 
 fun provideApolloClient(okHttpClient: OkHttpClient): ApolloClient {

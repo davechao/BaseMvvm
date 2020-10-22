@@ -1,8 +1,9 @@
 package com.dabenxiang.mvvm
 
 import android.app.Application
-import com.dabenxiang.mvvm.di.appModule
 import com.dabenxiang.mvvm.di.apiModule
+import com.dabenxiang.mvvm.di.appModule
+import com.dabenxiang.mvvm.di.repositoryModule
 import com.facebook.stetho.Stetho
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -25,14 +26,15 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
 
-       if (BuildConfig.DEBUG) {
+        if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
             Stetho.initializeWithDefaults(this)
         }
 
         val module = listOf(
-                appModule,
-                apiModule
+            appModule,
+            apiModule,
+            repositoryModule
         )
 
         startKoin {
