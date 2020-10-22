@@ -1,6 +1,5 @@
 package com.dabenxiang.mvvm.widget.utility
 
-import com.dabenxiang.mvvm.model.api.ApiRepository
 import com.dabenxiang.mvvm.model.api.vo.error.ErrorItem
 import com.dabenxiang.mvvm.model.api.vo.error.HttpExceptionItem
 import com.google.gson.Gson
@@ -16,6 +15,17 @@ import java.io.PrintWriter
 import java.io.StringWriter
 
 object HttpUtils {
+
+    const val X_APP_VERSION = "x-app-version"
+    const val BEARER = "Bearer "
+    const val AUTHORIZATION = "Authorization"
+
+    private const val MEDIA_TYPE_JSON = "application/json"
+    private const val TOKEN_NOT_FOUND = "401001"
+
+    fun isRefreshTokenFailed(code: String?): Boolean {
+        return code == TOKEN_NOT_FOUND
+    }
 
     fun getExceptionDetail(t: Throwable): String {
         return when (t) {
@@ -56,7 +66,7 @@ object HttpUtils {
                 null
             )
         )
-            .toResponseBody(ApiRepository.MEDIA_TYPE_JSON.toMediaTypeOrNull())
+            .toResponseBody(MEDIA_TYPE_JSON.toMediaTypeOrNull())
 
         val rawResponse = okhttp3.Response.Builder()
             .code(httpException.code())
