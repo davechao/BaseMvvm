@@ -2,9 +2,8 @@
 - MVVM
 - Coroutines
 - Koin
-- Retrofit
-- LiveData
-- Navigation
+- OkHttp & Retrofit
+- Jetpack
 
 ### Generate GraphQL schema.json
 1. npm install -g apollo-codegen
